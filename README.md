@@ -7,8 +7,11 @@ Elegí este proyecto porque me interesa mucho aprender a programar videojuegos e
 Pseudocódigo:
 
 variables iniciales:
+
 puntos_usuario
+
 puntos_compu
+
 puntos
 
 hit_carta()
