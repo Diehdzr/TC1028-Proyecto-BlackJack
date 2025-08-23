@@ -13,6 +13,7 @@ puntos
 
 hit_carta()
   carta = escoger_random(1, 11)
+ 
   regresar carta
 
 turno_usuario():
