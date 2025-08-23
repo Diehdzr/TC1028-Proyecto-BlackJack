@@ -1,4 +1,4 @@
-[# BLACKJACK-
+# BLACKJACK-
 Diego Hernández Rangel - A01710524
 Este es mi proyecto libre final de TC 1028. Mi idea es hacer una simulación de blackjack (21), donde la computadora escoge aleatoriamente cartas del 1 al 11, pero con el 10 teniendo más probabilidad de aparecer para representar las cartas de Jack, Queen y King. La dinámica es que ambos jugadores empiezan con 2 cartas, pero el jugador solo puede ver una de las cartas de la computadora (que funciona como la mesa). A partir de ahí, el jugador decide si quiere pedir más cartas las veces que quiera, mientras que la computadora debe seguir pidiendo cartas siempre que tenga menos de 17 puntos.
 El jugador empieza con 0 puntos y gana uno cuando gana una ronda o pierde uno cuando gana la computadora. El juego acaba cuando el jugador lo decida mostrando su "high-score".
@@ -65,4 +65,3 @@ MIENTRAS s
     pedir al usuario si quiere jugar otra ronda (s/n)
 
 imprimir "Juego terminado. Puntos finales:", puntos
-](https://github.com/Diehdzr/Prueba-/blob/main/README.md)
