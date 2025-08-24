@@ -18,7 +18,6 @@ hit_carta()
 
 turno_usuario():
     suma = 0
-    MIENTRAS TRUE:
         nueva = hit_carta()
         suma = suma + nueva
         imprimir "Carta:", nueva, " Total:", suma
