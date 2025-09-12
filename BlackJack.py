@@ -5,16 +5,13 @@ y el usuario escoja que apuesta hacer
 Pensaba también hacer una funcion que permita doblar la mano como en blackjack
 '''
 
-#Posiblemente me este adelantando, pero ya conocia que existia esta biblioteca, entonces la investigue
+#Posiblemente me este adelantando, pero ya conocia que existia
+# esta biblioteca, entonces la investigue
 #un poco para añadirla a una pequeña función
 
 import random
 
-# Variables iniciales
-fichas = 100
-apuesta = 10
-usuario = 0
-compu = 0
+
 
 #FUNCIONES BÁSICAS
 
@@ -23,14 +20,12 @@ def poner_apuesta(fichas, apuesta):
         return "Apuesta invalida"
     elif apuesta > fichas:
         return "Apuesta excede fichas"
-    else:
-        return apuesta
+    return apuesta
 
 def doblar_apuesta(apuesta, fichas):
     if apuesta * 2 > fichas:
         return apuesta
-    else:
-        return apuesta * 2
+    return apuesta * 2
     
 #como mencione, use la biblioteca de random para hacer esta función
 #docs.python.org/es/3.10/library/random.html
@@ -39,7 +34,7 @@ def repartir_carta():
 
 # Operadores de comparación para definir resultado
 
-def determinar_resultado(usuario, compu, apuesta, fichas):
+def determinar_fichas(usuario, compu, apuesta, fichas):
     if usuario > 21:
         fichas = fichas - apuesta
     elif compu > 21:
@@ -52,6 +47,61 @@ def determinar_resultado(usuario, compu, apuesta, fichas):
         fichas = fichas
 
     return fichas
+    
 
-#prueba de la biblioteca
-print(repartir_carta())
+#----------Programa principal -------------#
+
+# Variables iniciales
+fichas = 100
+usuario = 0
+compu = 0
+
+print("¡Bienvenido al casino! Tu número de fichas" \
+" iniciales son", fichas, "fichas.")
+
+apuesta = int((input("Ponga su apuesta:\n")))
+
+carta_1_compu = repartir_carta()
+carta_2_compu = repartir_carta()
+compu = carta_1_compu + carta_2_compu
+
+carta_1_usuario = repartir_carta()
+carta_2_usuario = repartir_carta()
+usuario = carta_1_usuario + carta_2_usuario
+
+print("Dealer tiene: ", carta_1_compu, "\nTienes: ", 
+      carta_1_usuario, carta_2_usuario)
+
+
+print("¿Qué desea hacer?\n" 
+      "(1) Pedir carta\n"
+      "(2) Doblar apuesta\n"
+      "(3) Plantarse")
+
+opcion = int(input())
+
+if opcion == 1:
+    nueva_carta = repartir_carta()
+    print("Tienes: ", carta_1_usuario, carta_2_usuario, nueva_carta)
+    usuario = usuario + nueva_carta
+elif opcion == 2:
+    if apuesta * 2 > fichas:
+        print("No se puede doblar, hit")
+    apuesta = doblar_apuesta(apuesta, fichas)
+    nueva_carta = repartir_carta()
+    print("Tienes: ", carta_1_usuario, carta_2_usuario, nueva_carta)
+    usuario = usuario + nueva_carta
+elif opcion == 3:
+    print("¡Buena suerte!")
+else:
+    print("Opción invalida")
+
+nueva_carta_compu = repartir_carta()
+compu = compu + nueva_carta_compu 
+print("El dealer tiene: ", carta_1_compu, carta_2_compu, nueva_carta_compu, " = ", compu)
+
+usuario = carta_1_usuario + carta_2_usuario
+print("Tienes: ", carta_1_usuario, carta_2_usuario, " = ", usuario)
+fichas = determinar_fichas(usuario, compu, apuesta, fichas)
+
+print("Fichas actuales: ", fichas)
