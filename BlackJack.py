@@ -11,8 +11,6 @@ Pensaba también hacer una funcion que permita doblar la mano como en blackjack
 
 import random
 
-
-
 #FUNCIONES BÁSICAS
 
 def poner_apuesta(fichas, apuesta):
@@ -57,51 +55,67 @@ usuario = 0
 compu = 0
 
 print("¡Bienvenido al casino! Tu número de fichas" \
-" iniciales son", fichas, "fichas.")
+    " iniciales son", fichas, "fichas.")
 
-apuesta = int((input("Ponga su apuesta:\n")))
+while fichas > 0:
+    apuesta = 0
+    while apuesta <= 0 or apuesta > fichas:
+        apuesta = int((input("Ponga su apuesta:\n")))
 
-carta_1_compu = repartir_carta()
-carta_2_compu = repartir_carta()
-compu = carta_1_compu + carta_2_compu
+    carta_1_compu = repartir_carta()
+    carta_2_compu = repartir_carta()
+    compu = carta_1_compu + carta_2_compu
 
-carta_1_usuario = repartir_carta()
-carta_2_usuario = repartir_carta()
-usuario = carta_1_usuario + carta_2_usuario
+    carta_1_usuario = repartir_carta()
+    carta_2_usuario = repartir_carta()
+    usuario = carta_1_usuario + carta_2_usuario
 
-print("Dealer tiene: ", carta_1_compu, "\nTienes: ", 
-      carta_1_usuario, carta_2_usuario)
+    print("Dealer tiene: ", carta_1_compu, "\nTienes: ", 
+          carta_1_usuario, carta_2_usuario)
 
+    while usuario < 21:
+        print("¿Qué desea hacer?\n" 
+              "(1) Pedir carta\n"
+              "(2) Doblar apuesta\n"
+              "(3) Plantarse")
 
-print("¿Qué desea hacer?\n" 
-      "(1) Pedir carta\n"
-      "(2) Doblar apuesta\n"
-      "(3) Plantarse")
+        opcion = int(input())
 
-opcion = int(input())
+        if opcion == 1:
+            nueva_carta = repartir_carta()
+            print("Tienes: ", usuario, "+", nueva_carta)
+            usuario = usuario + nueva_carta
+        elif opcion == 2:
+            if apuesta * 2 > fichas:
+                print("No se puede doblar, hit")
+                continue
+            apuesta = doblar_apuesta(apuesta, fichas)
+            nueva_carta = repartir_carta()
+            print("Tienes: ", usuario, "+", nueva_carta)
+            usuario = usuario + nueva_carta
+            break
+        elif opcion == 3:
+            print("¡Buena suerte!")
+            break
+        else:
+            print("Opción invalida")
 
-if opcion == 1:
-    nueva_carta = repartir_carta()
-    print("Tienes: ", carta_1_usuario, carta_2_usuario, nueva_carta)
-    usuario = usuario + nueva_carta
-elif opcion == 2:
-    if apuesta * 2 > fichas:
-        print("No se puede doblar, hit")
-    apuesta = doblar_apuesta(apuesta, fichas)
-    nueva_carta = repartir_carta()
-    print("Tienes: ", carta_1_usuario, carta_2_usuario, nueva_carta)
-    usuario = usuario + nueva_carta
-elif opcion == 3:
-    print("¡Buena suerte!")
-else:
-    print("Opción invalida")
+    while compu < 17:
+        nueva_carta_compu = repartir_carta()
+        compu = compu + nueva_carta_compu 
+        print("El dealer roba:", nueva_carta_compu, "=>", compu)
 
-nueva_carta_compu = repartir_carta()
-compu = compu + nueva_carta_compu 
-print("El dealer tiene: ", carta_1_compu, carta_2_compu, nueva_carta_compu, " = ", compu)
+    print("Dealer:", compu)
+    print("Tienes:", usuario)
 
-usuario = carta_1_usuario + carta_2_usuario
-print("Tienes: ", carta_1_usuario, carta_2_usuario, " = ", usuario)
-fichas = determinar_fichas(usuario, compu, apuesta, fichas)
+    fichas = determinar_fichas(usuario, compu, apuesta, fichas)
 
-print("Fichas actuales: ", fichas)
+    print("Fichas actuales: ", fichas)
+
+    if fichas <= 0:
+        print("Womp Womp la casa siempre gana")
+        break
+
+    seguir = input("¿Jugar otra ronda? (s/n): ")
+    if seguir == "n":
+        break
