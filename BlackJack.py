@@ -1,23 +1,23 @@
 import random
+import time
 
 #Baraja
 cartas = [
-    ["🂡 As♠", 1], ["🂢 2♠", 2], ["🂣 3♠", 3], ["🂤 4♠", 4], ["🂥 5♠", 5], ["🂦 6♠", 6],
+    ["🂡 As♠", 11], ["🂢 2♠", 2], ["🂣 3♠", 3], ["🂤 4♠", 4], ["🂥 5♠", 5], ["🂦 6♠", 6],
     ["🂧 7♠", 7], ["🂨 8♠", 8], ["🂩 9♠", 9], ["🂪 10♠", 10], ["🂫 J♠", 10], ["🂭 Q♠", 10], ["🂮 K♠", 10],
 
-    ["🂱 As♥", 1], ["🂲 2♥", 2], ["🂳 3♥", 3], ["🂴 4♥", 4], ["🂵 5♥", 5], ["🂶 6♥", 6],
+    ["🂱 As♥", 11], ["🂲 2♥", 2], ["🂳 3♥", 3], ["🂴 4♥", 4], ["🂵 5♥", 5], ["🂶 6♥", 6],
     ["🂷 7♥", 7], ["🂸 8♥", 8], ["🂹 9♥", 9], ["🂺 10♥", 10], ["🂻 J♥", 10], ["🂽 Q♥", 10], ["🂾 K♥", 10],
 
-    ["🃁 As♦", 1], ["🃂 2♦", 2], ["🃃 3♦", 3], ["🃄 4♦", 4], ["🃅 5♦", 5], ["🃆 6♦", 6],
+    ["🃁 As♦", 11], ["🃂 2♦", 2], ["🃃 3♦", 3], ["🃄 4♦", 4], ["🃅 5♦", 5], ["🃆 6♦", 6],
     ["🃇 7♦", 7], ["🃈 8♦", 8], ["🃉 9♦", 9], ["🃊 10♦", 10], ["🃋 J♦", 10], ["🃍 Q♦", 10], ["🃎 K♦", 10],
 
-    ["🃑 As♣", 1], ["🃒 2♣", 2], ["🃓 3♣", 3], ["🃔 4♣", 4], ["🃕 5♣", 5], ["🃖 6♣", 6],
+    ["🃑 As♣", 11], ["🃒 2♣", 2], ["🃓 3♣", 3], ["🃔 4♣", 4], ["🃕 5♣", 5], ["🃖 6♣", 6],
     ["🃗 7♣", 7], ["🃘 8♣", 8], ["🃙 9♣", 9], ["🃚 10♣", 10], ["🃛 J♣", 10], ["🃝 Q♣", 10], ["🃞 K♣", 10]
 ]
 
 
-#FUNCIONES BÁSICAS
-
+#FUNCIONES BÁSICAS Y DE OPERADORES
 def poner_apuesta(fichas, apuesta):
     if apuesta <= 0:
         return "Apuesta invalida"
@@ -27,6 +27,7 @@ def poner_apuesta(fichas, apuesta):
 
 def doblar_apuesta(apuesta, fichas):
     if apuesta * 2 > fichas:
+        print("Apuesta demasiado grande, se mantiene apuesta actual")
         return apuesta
     return apuesta * 2
 
@@ -46,7 +47,6 @@ def definir_As(cartas):
             cartas[i] = 1
         i += 1
 
-
 #como mencione, use la biblioteca de random para hacer esta función
 #docs.python.org/es/3.10/library/random.html
 #La función obtiene la posición de forma aleatoria de la matriz
@@ -65,28 +65,129 @@ def repartir_carta():
 def determinar_fichas(usuario, compu, apuesta, fichas):
     if usuario > 21:
         fichas = fichas - apuesta
+        print("Te pasaste!")
     elif compu > 21:
         fichas = fichas + apuesta
+        print("El dealer se pasó!")
     elif usuario > compu:
         fichas = fichas + apuesta
+        print("Ganaste!")
     elif compu > usuario:
         fichas = fichas - apuesta
+        print("Perdiste!")
     elif usuario == compu:
         fichas = fichas
+        print("Empate!")
 
     return fichas
-    
+
+
+#FUNCIONES PARA EL JUEGO
+
+def inicializar_juego():
+    fichas = 100
+    print("¡Bienvenido al casino! Tu número de fichas" \
+    " iniciales son", fichas, "fichas.")
+    return fichas
+
+def poner_apuesta(fichas, apuesta):
+    while apuesta <= 0 or apuesta > fichas:
+            apuesta = int((input("Ponga su apuesta:\n")))
+    return apuesta    
+
+#Repartir cartas iniciales a la computadora
+def repartir_cartas_iniciles(cartas_compu, baraja_compu, cartas_usuario, baraja_usuario):
+    carta_1_compu = repartir_carta()
+    carta_2_compu = repartir_carta()
+
+    #Añadir valores
+    cartas_compu.append(carta_1_compu[1])
+    cartas_compu.append(carta_2_compu[1])
+
+    #Añadir visuales
+    baraja_compu.append(carta_1_compu[0])
+    baraja_compu.append(carta_2_compu[0])
+
+    #Repartir cartas iniciales al usuario
+    carta_1_usuario = repartir_carta()
+    carta_2_usuario = repartir_carta()
+
+    #Añadir valores
+    cartas_usuario.append(carta_1_usuario[1])
+    cartas_usuario.append(carta_2_usuario[1])
+
+    #Añadir visuales
+    baraja_usuario.append(carta_1_usuario[0])
+    baraja_usuario.append(carta_2_usuario[0])
+
+    #Definir As
+    definir_As(cartas_usuario)
+    definir_As(cartas_compu)
+
+def nuevas_cartas_usuario(cartas_usuario, baraja_usuario):
+    nueva_carta = repartir_carta()
+    cartas_usuario.append(nueva_carta[1])
+    baraja_usuario.append(nueva_carta[0])
+    definir_As(cartas_usuario)
+
+def turno_jugador(cartas_usuario, baraja_usuario, usuario, fichas, apuesta):
+    primer_turno = True
+    while usuario < 21:
+        if primer_turno == True:
+            print("¿Qué desea hacer?\n" 
+                  "(1) Pedir carta\n"
+                  "(2) Plantarse\n"
+                  "(3) Doblar apuesta")
+        else:
+            print("¿Qué desea hacer?\n" 
+                  "(1) Pedir carta\n"
+                  "(2) Plantarse")
+
+        opcion = int(input())
+
+        if opcion == 1:
+            nuevas_cartas_usuario(cartas_usuario, baraja_usuario)
+            usuario = sumar_cartas(cartas_usuario)
+            print("Tienes: ", baraja_usuario, "=", usuario, "\n")
+            primer_turno = False
+
+        elif opcion == 2:
+            print("¡Buena suerte!")
+            break #Sale del ciclo
+
+        elif opcion == 3:
+            if primer_turno == True:
+                apuesta = doblar_apuesta(apuesta, fichas)
+                nuevas_cartas_usuario(cartas_usuario, baraja_usuario)
+                usuario = sumar_cartas(cartas_usuario)
+                print("Tienes: ", baraja_usuario, "=", usuario, "\n")
+                break #Sale del ciclo
+            else:
+                print("Opción inválida, no es el primer turno")
+
+        else:
+            print("Opción invalida")
+    return usuario, apuesta
+
+
+def turno_compu(cartas_compu, baraja_compu, compu):
+    while compu < 17:
+            nueva_carta = repartir_carta()
+            cartas_compu.append(nueva_carta[1])
+            baraja_compu.append(nueva_carta[0])
+            definir_As(cartas_compu)
+            compu = sumar_cartas(cartas_compu) 
+            print("El dealer roba:", nueva_carta[1], "\n=>", baraja_compu, "=", compu, "\n")
+            time.sleep(1)
+    return compu
 
 #----------Programa principal -------------#
 
 def main():
     # Variables iniciales
-    fichas = 100
+    fichas = inicializar_juego()
     usuario = 0
     compu = 0
-
-    print("¡Bienvenido al casino! Tu número de fichas" \
-    " iniciales son", fichas, "fichas.")
 
     #Ciclo while para repetir una y otra vez la partida hasta que el usuario quiera
     while fichas > 0:
@@ -95,87 +196,29 @@ def main():
         #Uso de listas para valores numericos:
         cartas_compu = []
         cartas_usuario = []
-
         #Uso de listas para mostrar visualmente las cartas
         baraja_compu = []
         baraja_usuario = []        
 
-        while apuesta <= 0 or apuesta > fichas:
-            apuesta = int((input("Ponga su apuesta:\n")))
+        apuesta = poner_apuesta(fichas, apuesta)
 
-        #Repartir cartas iniciales a la computadora
-        carta_1_compu = repartir_carta()
-        carta_2_compu = repartir_carta()
-
-        #Añadir valores
-        cartas_compu.append(carta_1_compu[1])
-        cartas_compu.append(carta_2_compu[1])
-
-        #Añadir visuales
-        baraja_compu.append(carta_1_compu[0])
-        baraja_compu.append(carta_2_compu[0])
-
-        #Repartir cartas iniciales al usuario
-        carta_1_usuario = repartir_carta()
-        carta_2_usuario = repartir_carta()
-
-        #Añadir valores
-        cartas_usuario.append(carta_1_usuario[1])
-        cartas_usuario.append(carta_2_usuario[1])
-
-        #Añadir visuales
-        baraja_usuario.append(carta_1_usuario[0])
-        baraja_usuario.append(carta_2_usuario[0])
-
+        repartir_cartas_iniciles(cartas_compu, baraja_compu, cartas_usuario, baraja_usuario)
+        
         compu = sumar_cartas(cartas_compu)
         usuario = sumar_cartas(cartas_usuario) 
 
-        print("Dealer tiene:", [baraja_compu], "=", compu - cartas_compu[1],
+        print("Dealer tiene:", [baraja_compu[0]], "=", cartas_compu[0],
         "\nTienes:", baraja_usuario, "=", usuario)
 
-        #Ciclo while que solo se repite si pide carta
-        while usuario < 21:
-            print("¿Qué desea hacer?\n" 
-              "(1) Pedir carta\n"
-              "(2) Doblar apuesta\n"
-              "(3) Plantarse")
-
-            opcion = int(input())
-
-            if opcion == 1:
-                nueva_carta = repartir_carta()
-                cartas_usuario.append(nueva_carta[1])
-                definir_As(cartas_usuario)
-                usuario = sumar_cartas(cartas_usuario)
-                print("Tienes: ", baraja_usuario, "=", usuario)
-
-            elif opcion == 2:
-                if apuesta * 2 > fichas:
-                    print("No se puede doblar, hit")
-                    continue #repite el ciclo y vuelve a checar si el usuario tiene mas de 17
-                apuesta = doblar_apuesta(apuesta, fichas)
-                nueva_carta = repartir_carta()
-                cartas_usuario.append(nueva_carta[1])
-                definir_As(cartas_usuario)
-                usuario = sumar_cartas(cartas_usuario)
-                print("Tienes: ", baraja_usuario, "=", usuario)
-                break #Sale del ciclo
-
-            elif opcion == 3:
-                print("¡Buena suerte!")
-                break #Sale del ciclo
-            else:
-                print("Opción invalida")
-
-        while compu < 17:
-            nueva_carta_compu = repartir_carta()
-            cartas_compu.append(nueva_carta_compu[1])
-            definir_As(cartas_compu)
-            compu = sumar_cartas(cartas_compu) 
-            print("El dealer roba:", nueva_carta_compu[1], "\n=>", baraja_compu, "=", compu)
-
-        print("Dealer tiene:", baraja_compu, "=", compu)
-        print("Tienes:", baraja_usuario, "=", usuario)
+        usuario, apuesta = turno_jugador(cartas_usuario, baraja_usuario, usuario, fichas, apuesta)
+        if usuario <= 21:
+            print("Turno del dealer")
+            time.sleep(1.5)
+            compu = turno_compu(cartas_compu, baraja_compu, compu)
+            print("Dealer tiene:", baraja_compu, "=", compu)
+            print("Tienes:", baraja_usuario, "=", usuario, "\n")
+            
+        time.sleep(1.5)
 
         fichas = determinar_fichas(usuario, compu, apuesta, fichas)
 
