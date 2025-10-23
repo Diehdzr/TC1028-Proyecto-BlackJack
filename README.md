@@ -1,63 +1,58 @@
-# BLACKJACK-
+# BLACKJACK
 Diego Hernández Rangel - A01710524
-Este es mi proyecto libre final de TC 1028. Mi idea es hacer una simulación de blackjack (21), donde la computadora escoge aleatoriamente cartas del 1 al 11, pero con el 10 teniendo más probabilidad de aparecer para representar las cartas de Jack, Queen y King. La dinámica es que ambos jugadores empiezan con 2 cartas, pero el jugador solo puede ver una de las cartas de la computadora (que funciona como la mesa). A partir de ahí, el jugador decide si quiere pedir más cartas las veces que quiera, mientras que la computadora debe seguir pidiendo cartas siempre que tenga menos de 17 puntos.
-El jugador empieza con 0 puntos y gana uno cuando gana una ronda o pierde uno cuando gana la computadora. El juego acaba cuando el jugador lo decida mostrando su "high-score".
-Elegí este proyecto porque me interesa mucho aprender a programar videojuegos en el futuro, y considero que esta es una idea sencilla que me permite practicar conceptos básicos de programación dentro de una temática que me motiva.
 
-Pseudocódigo:
+El programa de BlackJack es una simulación del clásico juego de cartas de casino. En este juego, el objetivo del usuario es conseguir una mano con un valor lo más cercano posible a 21 sin pasarse, compitiendo contra la computadora (dealer).
+El usuario comienza con una cantidad inicial de fichas y podrá decidir en cada ronda cuánto apostar. Las reglas básicas del BlackJack aplican, con tres acciones disponibles:
 
-variables iniciales:
-puntos
- 
-hit_carta()
-  carta = escoger_random(1, 11)
-  regresar carta
+&nbsp;-Pedir carta (solicitar una carta nueva)
 
-turno_usuario():
-    suma = 0
-        nueva = hit_carta()
-        suma = suma + nueva
-        imprimir "Carta:", nueva, " Total:", suma
-        SI suma >= 21:
-            acabar función
-        decision = PEDIR "¿Otra carta? (s/n): "
-        SI decision == "n":
-            acabar función
-    regresar suma
+&nbsp;-Plantarse (mantener su mano actual)
 
-turno_compu():
-    suma = 0
-    MIENTRAS suma < 17:
-        nueva = hit_carta()
-        suma = suma + nueva
-    imprimir "Total computadora:", suma
-    regresar suma
-    
-jugar_ronda():
+&nbsp;-Doblar apuesta (duplicar la apuesta y recibir una última carta)
 
-  SI usuario > 21:
-        imprimir "Usuario se pasó. Punto para compu."
-        puntos = puntos - 1
-  SI NO, SI compu > 21:
-        imprimir "Compu se pasó. Punto para usuario."
-        puntos = puntos + 1
-  SI NO, SI usuario > compu:
-        imprimir "Usuario gana la ronda."
-        puntos = puntos + 1
-  SI NO, SI compu > usuario:
-        imprimir "Compu gana la ronda."
-        puntos = puntos - 1
-  SI NO:
-        IMPRIMIR "Empate."
-        puntos = puntos
-  regresar puntos
+El juego continúa hasta que el jugador se quede sin fichas o decida retirarse.
 
-------------------PROGRAMA PRINCIPAL----------------------
+### Algoritmo
+El programa sigue una estructura basada en funciones, donde se combinan condicionales, ciclos y listas para simular la dinámica del BlackJack.
 
-pedir al jugador si quiere jugar otra ronda (s/n)
-MIENTRAS s
-    jugar_ronda():
-    IMPRIMIR "Puntos acumulados:", puntos
-    pedir al usuario si quiere jugar otra ronda (s/n)
+1 Inicialización: El jugador comienza con 100 fichas.
 
-imprimir "Juego terminado. Puntos finales:", puntos
+2 Apuesta: Se valida que la apuesta sea válida (no puede ser menor o igual a 0 ni mayor al número de fichas disponibles).
+
+3 Repartición inicial: El usuario y el dealer reciben dos cartas al azar desde una baraja estándar de 52 cartas. El jugador solo puede ver una carta del dealer hasta que termine su turno.
+
+4 Turno del jugador: El jugador elige entre pedir carta, plantarse o doblar la apuesta.
+
+&nbsp;-Si pide carta, recibe una nueva y se actualiza el valor total.
+
+&nbsp;-Si se pasa de 21, pierde automáticamente la ronda.
+
+&nbsp;-Si dobla, se duplica la apuesta y se recibe una carta más (solamente disponible en el primer turno).
+
+5 Se repite el turno del jugador hasta que este decida plantarse o se pase de 21.
+
+6 Turno del dealer: La computadora pedirá cartas automáticamente hasta alcanzar un valor mínimo de 17.
+
+7 Determinación del resultado: Se comparan las manos para determinar si el jugador gana, pierde o empata. Las fichas se ajustan de acuerdo con el resultado.
+
+8 Continuación del juego: El jugador puede decidir si desea jugar otra ronda o retirarse.
+
+### Bibliotecas usadas
+
+El programa usa solo bibliotecas estándar de Python, por lo que no requiere instalación adicional:
+
+&nbsp;-random: para seleccionar cartas al azar desde la baraja, simulando el reparto real. Se utiliza random.randint(rango), el cual selecciona un numero entero dentro del rango utilizado
+
+&nbsp;-time: para agregar pausas (time.sleep(segundos)) y hacer que el juego se sienta más fluido y natural, especialmente durante el turno del dealer.
+
+### Instrucciones
+
+Para jugarlo, descarga o copia el código en un archivo con nombre y luego ejecuta el programa en tu terminal o IDE favorito. Ahora solo sigue las instrucciones en pantalla:
+
+&nbsp;-Ingresa tu apuesta.
+
+&nbsp;-Usa los números 1, 2, o 3 para elegir entre Pedir carta, Plantarte o Doblar apuesta.
+
+&nbsp;-Observa los resultados de cada ronda y decide si deseas seguir jugando.
+
+Disfruta!!!
