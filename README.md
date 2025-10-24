@@ -37,6 +37,52 @@ El programa sigue una estructura basada en funciones, donde se combinan condicio
 
 8 Continuación del juego: El jugador puede decidir si desea jugar otra ronda o retirarse.
 
+### Pseudocódigo
+
+``` 
+inicializar fichas = 100
+mientras fichas > 0 y jugador quiera seguir:
+ apuesta = solicitar cantidad válida
+ repartir 2 cartas al jugador
+ repartir 2 cartas al dealer
+ mostrar cartas iniciales del jugador y una del dealer
+
+ turno del jugador:
+ mientras el valor de la mano del jugador < 21:
+  si primer turno:
+   mostrar opciones (pedir, plantarse, doblar)
+  sino:
+   mostrar opciones (pedir, plantarse)
+  leer opción
+  si opción = pedir:
+   dar nueva carta
+   actualizar valor
+  si opción = doblar y primer turno:
+   duplicar apuesta si no se pasa
+   dar una carta
+   terminar turno
+  si opción = plantarse:
+   terminar turno
+
+ turno del dealer:
+ mientras el valor de la mano del dealer < 17:
+  dealer roba carta
+  actualizar valor
+
+ resultado:
+ si jugador > 21 → pierde
+ si dealer > 21 → gana jugador
+ si jugador > dealer → gana jugador
+ si dealer > jugador → pierde jugador
+ si empate → nadie gana
+ ajustar fichas según resultado
+ mostrar fichas actuales
+
+ si fichas <= 0:
+  mostrar "la casa gana"
+ preguntar si desea jugar otra ronda
+```
+
 ### Bibliotecas usadas
 
 El programa usa solo bibliotecas estándar de Python, por lo que no requiere instalación adicional:
