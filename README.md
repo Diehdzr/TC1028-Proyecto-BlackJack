@@ -91,6 +91,8 @@ El programa usa solo bibliotecas estándar de Python, por lo que no requiere ins
 
 &nbsp;-time: para agregar pausas (time.sleep(segundos)) y hacer que el juego se sienta más fluido y natural, especialmente durante el turno del dealer.
 
+&nbsp;- Sitio donde saque los símbolos de las cartas: https://es.piliapp.com/symbol/card-suit/
+
 ### Instrucciones
 
 Para jugarlo, descarga o copia el código en un archivo con nombre y luego ejecuta el programa en tu terminal o IDE favorito. Ahora solo sigue las instrucciones en pantalla:
